@@ -1,4 +1,5 @@
 require(RSocrata)
+require(plyr)
 require(dplyr)
 
 
@@ -18,15 +19,20 @@ Data.311 <- read.socrata("https://data.kcmo.org/311/KCMOPS311-Data/7at3-sxhp")
 # 311 Volume by Month for a defined timeframe
 ###
 
-#Grouping Data
+  #Filter to Work Group you are interested in
   Work.Group.DF <- dplyr::filter(Data.311, WORK.GROUP %in% "Public Works-Street and Traffic-Streetlights")
   
+  #Add a column in the "M-Y" format. For rolling up I guess?
+  Work.Group.DF$Creation.Month.Year <- strftime(Work.Group.DF$CREATION.DATE, format="%m/%Y")
 
-require(ggplot2)
-p <- ggplot(Work.Group.DF, aes(x=CREATION.YEAR, y=count(CASE.ID), group=CREATION.MONTH))
-p + geom_line()
-
-
+  Output <- ddply(Work.Group.DF, c("Creation.Month.Year"), summarise,
+                 Numbe.Of.Cases    = length(CASE.ID),
+                 Mean.Days.To.Close = mean(DAYS.TO.CLOSE, na.rm=TRUE),
+                 sd   = sd(DAYS.TO.CLOSE, na.rm=TRUE)
+                )
+                 
+##How do I rollup by dates? Test <- is trying to format my new column as posix but it isn't working right. 
+#Can I just use the original full creation date and just rollup by months?
 
 
   
