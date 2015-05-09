@@ -6,7 +6,7 @@ require(ggplot2)
 
 
 #Load 311 Data
-token <- JJ_K1U6j1aV1y-3L4BQEDk6gPmdsqYf_evZg
+token <- XXXXXXX
 Data.311 <- read.socrata("https://data.kcmo.org/311/KCMOPS311-Data/7at3-sxhp")
 
 #Inspect the data
@@ -23,7 +23,8 @@ Data.311$CLOSED.DATE <- as.POSIXct(Data.311$CLOSED.DATE)
 ###
 
 #Filter to Work Group you are interested in
-Work.Group.DF <- dplyr::filter(Data.311, WORK.GROUP %in% "Public Works-Street and Traffic-Streetlights")
+TargetWG <- "Public Works-Street and Traffic-Streetlights"
+Work.Group.DF <- dplyr::filter(Data.311, WORK.GROUP %in% ( TargetWG))
 
 #Add a column in the "M-Y" format. For rolling up I guess?
 Work.Group.DF$Creation.Month.Year <- strftime(Work.Group.DF$CREATION.DATE, format="%m%Y")
@@ -48,7 +49,19 @@ Output <- mutate(Output, "Lower SD Limit" = Mean.Days.To.Close - Standard.Deviat
 
 #plot
 p <- ggplot(Output, aes(x=Creation.Month.Year, y=Number.Of.Cases, group= 1))
-p + geom_line(size = 2)
+p2 <- p + geom_line(size = 2) + 
+          stat_smooth(
+                      se = F,
+                      size = 2, 
+                      alpha = 1
+                      )+
+          labs(title = TargetWG,
+              x = "Creation Month - Year"
+              y = "Total Number of Cases Per Month")
+
+
+
+ggsave(p2, file="sample.jpg", dpi = 600)
 
 ## To fix##
 #Need to fix labels for chart.
