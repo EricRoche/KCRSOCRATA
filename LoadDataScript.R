@@ -55,6 +55,12 @@ require(dplyr)
 Output <- mutate(Output, "Upper SD Limit"=  Mean.Days.To.Close + Standard.Deviation) 
 Output <- mutate(Output, "Lower SD Limit" = Mean.Days.To.Close - Standard.Deviation)
 
+
+#Filter Output to timeframe
+FilterFunc <- function(x,y){Output[Output$Creation.Month.Year >= x & Output$Creation.Month.Year <= y,]}
+Test <- FilterFunc(From.Month.Year,To.Date)  
+Test[order(Test$Creation.Month.Year , decreasing = FALSE ),]
+
 #plot
 p <- ggplot(Output, aes(x=Creation.Month.Year, y=Number.Of.Cases, group= 1)) 
 p2 <- p + geom_line(size = 2) + 
@@ -87,6 +93,7 @@ print(p2)
 ggsave(p2, file="sample.jpg", dpi = 600)
 
 ## To fix##
+#Need to test plotting using the test filter function
 #Need to use a way to set "zoom paramaters" on chart
 #need to generate a second chart with median days to close + SD's
 #Need to implement timeframe selection
