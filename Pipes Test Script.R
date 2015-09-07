@@ -28,8 +28,13 @@ PipesTestP2 <- Data.311 %>%
 #Add a unique identified that is shared between both datasets.
 
 PipesTestP1 <- mutate(PipesTestP1, UniqueID = paste(DEPARTMENT, WORK.GROUP, CREATION.YEAR, CREATION.MONTH, sep = " "))
-PipesTestP2 <- mutate(PipesTestP1, UniqueID = paste(DEPARTMENT, WORK.GROUP, CREATION.YEAR, CREATION.MONTH, sep = " "))
-PipedTestAllData <- left_join(PipesTestP1, PipesTestP2, by = "UniqueID")
+PipesTestP2 <- mutate(PipesTestP2, UniqueID = paste(DEPARTMENT, WORK.GROUP, CREATION.YEAR, CREATION.MONTH, sep = " "))
+
+#Drops duplicate columns but retains unique ID then combines the two data frames. 
+PipesTestP2 <- subset(PipesTestP2, select = -c(DEPARTMENT:CREATION.MONTH))
+PipedTestAllData <- full_join(PipesTestP1, PipesTestP2, by = "UniqueID")
 
 
-#Remove rows which are now duplicative. 
+
+
+
