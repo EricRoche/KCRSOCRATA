@@ -1,4 +1,4 @@
-#P1 includes all data
+#This script runs all of the summary statistics by group
 
 
 StatsPart1 <- Data.311 %>% 
@@ -16,8 +16,8 @@ StatsPart2 <- Data.311 %>%
                 filter(STATUS == "RESOL" | STATUS == "OPEN" & length(CASE.ID) > 1) %>%
                   group_by(DEPARTMENT, WORK.GROUP, CREATION.YEAR, CREATION.MONTH) %>%
                     summarise(
-                      Mean.Days.To.Close.Of.Closed.Cases = mean(DAYS.TO.CLOSE),
-                      Median.Days.To.Close.Closed.Cases = (median(DAYS.TO.CLOSE)*1),
+                      Mean.Days.To.Close.Of.Closed.Cases = mean(DAYS.TO.CLOSE, na.rm=TRUE),
+                      Median.Days.To.Close.Closed.Cases = (median(DAYS.TO.CLOSE, na.rm=TRUE)*1),
                       Mean.Days.Open.For.Open.And.Closed.Cases = mean(Days.Open),
                       Median.Days.Open.For.Open.And.Closed.Cases = (median(Days.Open)*1),
                       Standard.Deviation.of.Days.Open = sd(Days.Open, na.rm=TRUE),
