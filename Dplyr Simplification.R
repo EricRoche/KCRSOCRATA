@@ -23,6 +23,22 @@ Data.311$Number.Of.Open.Cases[Data.311$Number.Of.Open.Cases != "1"] <- 0
 Data.311$Number.Of.Open.Cases <- as.numeric(Data.311$Number.Of.Open.Cases)
 Data.311$DAYS.TO.CLOSE <- as.numeric(Data.311$DAYS.TO.CLOSE)
 
+
+
+#Add in a column for Days to Close for Open and closed cases
+Data.311 <- filter(Data.311, STATUS == "OPEN" | STATUS == "RESOL")
+
+
+
+Data.312 <- Data.311%>%
+              filter(STATUS == "OPEN") %>%
+                select(CASE.ID, CREATION.DATE) %>%
+                  mutate(Days.Open.For.Open.Cases.Only = as.numeric(as.POSIXct(Sys.Date()) - CREATION.DATE)) %>%
+                    select(CASE.ID, Days.Open.For.Open.Cases.Only)
+                      
+Data.311 <- merge(x = Data.311, y = Data.312, by = "CASE.ID", all.x = TRUE)
+
+
 #Filter data to only closed cases
 
 
