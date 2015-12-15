@@ -45,7 +45,11 @@ Date.End.Month <- as.data.frame(Date.End.Month)
 Date.End.Month <- mutate(Date.End.Month, Month.Year =  paste((year(Date.End.Month)), month(Date.End.Month),sep = "."))
 PipedTestAllData <- mutate(PipedTestAllData , Month.Year =  paste(CREATION.YEAR, CREATION.MONTH, sep = "."))
 PipedTestAllData <- full_join(PipedTestAllData, Date.End.Month, by = "Month.Year" )
+PipedTestAllData$Date.End.Month <- as.POSIXct(PipedTestAllData$Date.End.Month)
 
+#Add in Fiscal Year
+FiscalYears <- seq(as.POSIXct("2000-05-01"), length=35, by="year")
+PipedTestAllData$Fiscal.Year <- (2001:2025)[ findInterval(PipedTestAllData$Date.End.Month, FiscalYears)]
 
 write.csv(PipedTestAllData, file = "311Stats.csv")
 
