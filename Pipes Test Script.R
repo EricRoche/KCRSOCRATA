@@ -40,7 +40,11 @@ PipedTestAllData <- full_join(PipesTestP1, PipesTestP2, by = "UniqueID")
 #This code generates a dataframe of the last days of the month
 Date.End.Month <- seq(as.Date("2005-02-01"),length=240,by="months")-1
 Date.End.Month <- as.data.frame(Date.End.Month)
-Date.End.Month <- mutate(Date.End.Month, Month.Year =  paste((year(Date.End.Month)), month(Date.End.Month),sep = "-"))
-PipedTestAllData <- mutate(PipedTestAllData , Month.Year =  paste(CREATION.YEAR, CREATION.MONTH, sep = "-"))
+Date.End.Month <- format(Date.End.Month$Date.End.Month, "%m/%d/%y")
+Date.End.Month <- as.data.frame(Date.End.Month)
+Date.End.Month <- mutate(Date.End.Month, Month.Year =  paste((year(Date.End.Month)), month(Date.End.Month),sep = "."))
+PipedTestAllData <- mutate(PipedTestAllData , Month.Year =  paste(CREATION.YEAR, CREATION.MONTH, sep = "."))
 PipedTestAllData <- full_join(PipedTestAllData, Date.End.Month, by = "Month.Year" )
+PipedTestAllData <- gsub(".", "/", PipedTestAllData)
 
+write.csv(PipedTestAllData, file = "311Stats.csv")
