@@ -42,3 +42,7 @@ Data.311 <- merge(x = Data.311, y = Data.312, by = "CASE.ID", all.x = TRUE)
 #Generates a column with "days open" for closed and open cases"
 Data.311$Days.Open = rowSums(cbind(Data.311$Days.Open.For.Open.Cases.Only, Data.311$DAYS.TO.CLOSE), na.rm=TRUE)
 
+
+
+
+

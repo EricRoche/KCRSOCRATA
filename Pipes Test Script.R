@@ -5,10 +5,10 @@ PipesTestP1 <- Data.311 %>%
                 filter(STATUS == "RESOL" | STATUS == "OPEN") %>%
                   group_by(DEPARTMENT, WORK.GROUP, CREATION.YEAR, CREATION.MONTH) %>%
                     summarise(
-                      Number.Of.Cases = length(CASE.ID),
+                      Total.Number.Of.Cases = length(CASE.ID),
                       Number.Of.Open.Cases = sum(Number.Of.Open.Cases),
                       Number.Of.Cases.Exceeding.Timeframe = sum(EXCEEDED.EST.TIMEFRAME),
-                      Percent.Of.Cases.Exceeding.Timeframe = (Number.Of.Cases.Exceeding.Timeframe/Number.Of.Cases)*100
+                      Percent.Of.Cases.Exceeding.Timeframe = (Number.Of.Cases.Exceeding.Timeframe/Total.Number.Of.Cases)*100
                       )
                       
 #P2 only calculated on closed data
@@ -49,7 +49,34 @@ PipedTestAllData$Date.End.Month <- as.POSIXct(PipedTestAllData$Date.End.Month)
 
 #Add in Fiscal Year
 FiscalYears <- seq(as.POSIXct("2000-05-01"), length=35, by="year")
-PipedTestAllData$Fiscal.Year <- (2001:2025)[ findInterval(PipedTestAllData$Date.End.Month, FiscalYears)]
+PipedTestAllData$Creation.Fiscal.Year <- (2001:2025)[ findInterval(PipedTestAllData$Date.End.Month, FiscalYears)]
+
+#Arrange variables in a better order
+PipedTestAllData <- PipedTestAllData[,c(
+  "DEPARTMENT",
+  "WORK.GROUP",
+  "Creation.Fiscal.Year",
+  "CREATION.YEAR",
+  "CREATION.MONTH",
+  "Month.Year",
+  "Date.End.Month",
+  "Total.Number.Of.Cases",
+  "Number.Of.Open.Cases",
+  "Number.Of.Cases.Exceeding.Timeframe",
+  "Percent.Of.Cases.Exceeding.Timeframe",
+  "Mean.Days.To.Close.Of.Closed.Cases",
+  "Median.Days.To.Close.Closed.Cases",
+  "Standard.Deviation",
+  "Above.One.Standard.Deviation",
+  "Above.Two.Standard.Deviations",
+  "Above.Three.Standard.Deviations",
+  "Below.One.Standard.Deviation",
+  "Below.Two.Standard.Deviations",
+  "Below.Three.Standard.Deviations",
+  "UniqueID"
+)]
+
 
 write.csv(PipedTestAllData, file = "311Stats.csv")
+
 
