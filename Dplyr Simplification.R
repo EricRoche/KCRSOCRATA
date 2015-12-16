@@ -2,7 +2,7 @@
 library(RSocrata)
 library(dplyr)
 library(lubridate)
-library(scales)
+
 
 token <- XXXXXXX
 Data.311 <- read.socrata("https://data.kcmo.org/311/KCMOPS311-Data/7at3-sxhp")
