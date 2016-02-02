@@ -26,18 +26,20 @@ Current.Date <- as.POSIXct(Sys.Date())
 Data.311 <- filter(Data.311, STATUS == "OPEN" | STATUS == "RESOL")
 
 #Add in a column for Days to Close for Open and closed cases
-Data.312 <- Data.311%>%
+Open.Cases.Days.Open <- Data.311%>%
               filter(STATUS == "OPEN") %>%
                 select(CASE.ID, CREATION.DATE) %>%
                   mutate(Days.Open.For.Open.Cases.Only = (Current.Date - CREATION.DATE)) %>%
                     select(CASE.ID, Days.Open.For.Open.Cases.Only)
+
 #Subracting PosixCT results in the number of seconds, this converts it to days.and then rounds off the decimals
-Data.312$Days.Open.For.Open.Cases.Only <- as.numeric(Data.312$Days.Open.For.Open.Cases.Only, units="days")
-Data.312$Days.Open.For.Open.Cases.Only <- round(Data.312$Days.Open.For.Open.Cases.Only, digits = 0)
-                      
-Data.311 <- merge(x = Data.311, y = Data.312, by = "CASE.ID", all.x = TRUE)
-#Add two days to close columns together
-#Generates a column with "days open" for closed and open cases"
+Open.Cases.Days.Open$Days.Open.For.Open.Cases.Only <- as.numeric(Open.Cases.Days.Open$Days.Open.For.Open.Cases.Only, units="days")
+Open.Cases.Days.Open$Days.Open.For.Open.Cases.Only <- round(Open.Cases.Days.Open$Days.Open.For.Open.Cases.Only, digits = 0)
+
+#Merges the two dataframes                      
+Data.311 <- merge(x = Data.311, y = Open.Cases.Days.Open, by = "CASE.ID", all.x = TRUE)
+
+#Generates a column with "days open" for closed and open cases" If a case is closed it uses that date, if it is open it will pull the Days.Open.For.Open.Cases.Only date
 Data.311$Days.Open = rowSums(cbind(Data.311$Days.Open.For.Open.Cases.Only, Data.311$DAYS.TO.CLOSE), na.rm=TRUE)
 
 

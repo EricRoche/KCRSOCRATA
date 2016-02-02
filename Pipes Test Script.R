@@ -34,6 +34,11 @@ Stats$Date.End.Month <- as.POSIXct(Stats$Date.End.Month)
 FiscalYears <- seq(as.POSIXct("2000-05-01"), length=35, by="year")
 Stats$Creation.Fiscal.Year <- (2001:2025)[ findInterval(Stats$Date.End.Month, FiscalYears)]
 
+#Overwrite negative standard deviations with zeroes because it doesn't make sense in this context.
+Stats$Below.Three.Standard.Deviations[Stats$Below.Three.Standard.Deviations < 0] <- 0
+Stats$Below.Two.Standard.Deviations[Stats$Below.Two.Standard.Deviations < 0] <- 0
+Stats$Below.One.Standard.Deviation[Stats$Below.One.Standard.Deviation < 0] <- 0
+
 #Arrange variables in a better order
 Stats <- Stats[,c(
   "DEPARTMENT",
