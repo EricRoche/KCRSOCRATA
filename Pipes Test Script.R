@@ -18,6 +18,7 @@ Stats <- Data.311 %>%
     Below.Two.Standard.Deviations = (Mean.Days.To.Close.Of.Closed.Cases - (Standard.Deviation*2)),
     Below.Three.Standard.Deviations = (Mean.Days.To.Close.Of.Closed.Cases - (Standard.Deviation*3))) %>%
   mutate(UniqueID = paste(DEPARTMENT, WORK.GROUP, CREATION.YEAR, CREATION.MONTH, sep = " "))
+  
 
 #Had an issue where I needed to map the data out by timeline and the function needed the last day of the month to properly space things
 #This code generates a dataframe of the last days of the month
@@ -29,6 +30,7 @@ Date.End.Month <- mutate(Date.End.Month, Month.Year =  paste((year(Date.End.Mont
 Stats <- mutate(Stats , Month.Year =  paste(CREATION.YEAR, CREATION.MONTH, sep = "."))
 Stats <- full_join(Stats, Date.End.Month, by = "Month.Year" )
 Stats$Date.End.Month <- as.POSIXct(Stats$Date.End.Month)
+Stats <- filter(Stats, !is.na(DEPARTMENT))
 
 #Add in Fiscal Year
 FiscalYears <- seq(as.POSIXct("2000-05-01"), length=35, by="year")
