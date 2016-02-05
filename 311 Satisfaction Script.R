@@ -7,8 +7,6 @@ Survey <- read.socrata("https://data.kcmo.org/311/311-Call-Center-Service-Reques
 #Data Cleaning
 Survey$CREATION.DATE <- as.POSIXct(Survey$CREATION.DATE)
 Survey$CLOSED.DATE <- as.POSIXct(Survey$CLOSED.DATE)
-summarise(Survey, Total.Responses.For.Quality.Of.Service = count(is.na(QUALITY.OF.SERVICE)))
- tasummarise(Survey, Total.Responses.For.Timeliness.Of.Service = n(),na.rm=TRUE)
 
 #Roll Data Together
 library(dplyr)
@@ -35,5 +33,11 @@ SurveyStats <- Survey %>%
     Percent.Dissatisfied.With.Customer.Service = (Number.Of.Responses.Dissatisfied.With.Customer.Service/Total.Customer.Service.Survey.Resonses)) %>%
   mutate(UniqueID = paste(DEPARTMENT, WORK.GROUP, CREATION.YEAR, CREATION.MONTH, sep = " "))
 
+#Drop unncessary columns that would otherwise be duplicated after the data frames merge
+Drop.Columns <- c("DEPARTMENT", "WORK.GROUP", "CREATION.YEAR", "CREATION.MONTH")
+SurveyStats <- SurveyStats[,!names(SurveyStats) %in% Drop.Columns]
+
 #Merge Datasets
 Stats <- merge(x = Stats, y = SurveyStats, by = "UniqueID", all.x = TRUE)
+
+write.csv(Stats, file = "311Stats.csv")

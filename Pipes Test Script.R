@@ -4,12 +4,12 @@ Stats <- Data.311 %>%
   filter(STATUS == "RESOL" | STATUS == "OPEN") %>%
   group_by(DEPARTMENT, WORK.GROUP, CREATION.YEAR, CREATION.MONTH) %>%
   summarise(
-    Total.Number.Of.Cases = length(CASE.ID),
-    Number.Of.Open.Cases = sum(Number.Of.Open.Cases),
+    Total.Number.Of.Cases.Created = length(CASE.ID),
+    Number.Of.Cases.Remaining.Open = sum(Number.Of.Open.Cases),
     Number.Of.Cases.Exceeding.Timeframe = sum(EXCEEDED.EST.TIMEFRAME),
-    Percent.Of.Cases.Exceeding.Timeframe = (Number.Of.Cases.Exceeding.Timeframe/Total.Number.Of.Cases)*100,
-    Mean.Days.To.Close.Of.Closed.Cases = mean(DAYS.TO.CLOSE),
-    Median.Days.To.Close.Closed.Cases = (median(DAYS.TO.CLOSE)*1),
+    Percent.Of.Cases.Exceeding.Timeframe = (Number.Of.Cases.Exceeding.Timeframe/Total.Number.Of.Cases.Created)*100,
+    Mean.Days.To.Close.Of.Closed.Cases = mean(DAYS.TO.CLOSE, na.rm=T),
+    Median.Days.To.Close.Closed.Cases = (median(DAYS.TO.CLOSE, na.rm =T)*1),
     Standard.Deviation = sd(DAYS.TO.CLOSE, na.rm=TRUE),
     Above.One.Standard.Deviation = (Standard.Deviation + Mean.Days.To.Close.Of.Closed.Cases),
     Above.Two.Standard.Deviations = ((Standard.Deviation*2) + Mean.Days.To.Close.Of.Closed.Cases),
@@ -50,8 +50,8 @@ Stats <- Stats[,c(
   "CREATION.MONTH",
   "Month.Year",
   "Date.End.Month",
-  "Total.Number.Of.Cases",
-  "Number.Of.Open.Cases",
+  "Total.Number.Of.Cases.Created",
+  "Number.Of.Cases.Remaining.Open",
   "Number.Of.Cases.Exceeding.Timeframe",
   "Percent.Of.Cases.Exceeding.Timeframe",
   "Mean.Days.To.Close.Of.Closed.Cases",
