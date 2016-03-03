@@ -9,10 +9,12 @@ Data.311 <- read.socrata("https://data.kcmo.org/311/KCMOPS311-Data/7at3-sxhp")
 #Clean Data
 Data.311$CREATION.DATE <- as.POSIXct(Data.311$CREATION.DATE)
 Data.311$CLOSED.DATE <- as.POSIXct(Data.311$CLOSED.DATE)
+Data.311$EXCEEDED.EST.TIMEFRAME <- as.character(Data.311$EXCEEDED.EST.TIMEFRAME)
 Data.311$EXCEEDED.EST.TIMEFRAME[Data.311$EXCEEDED.EST.TIMEFRAME=="Y"] <- 1
 Data.311$EXCEEDED.EST.TIMEFRAME[Data.311$EXCEEDED.EST.TIMEFRAME=="N"] <- 0
 Data.311$EXCEEDED.EST.TIMEFRAME <- as.numeric(Data.311$EXCEEDED.EST.TIMEFRAME)
 Data.311 <- mutate(Data.311, Number.Of.Open.Cases = (STATUS))
+Data.311$Number.Of.Open.Cases <- as.character(Data.311$Number.Of.Open.Cases)
 Data.311$Number.Of.Open.Cases[Data.311$Number.Of.Open.Cases == "OPEN"] <- 1
 Data.311$Number.Of.Open.Cases[Data.311$Number.Of.Open.Cases != "1"] <- 0
 Data.311$Number.Of.Open.Cases <- as.numeric(Data.311$Number.Of.Open.Cases)
