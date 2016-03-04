@@ -25,11 +25,11 @@ SurveyStats <- Survey %>%
     Number.Of.Responses.Satisfied.With.Customer.Service = sum(CUSTOMER.SERVICE == 3 | CUSTOMER.SERVICE == 4 | CUSTOMER.SERVICE == 5, na.rm=T),
     Number.Of.Responses.Dissatisfied.With.Customer.Service = sum(CUSTOMER.SERVICE == 1 | CUSTOMER.SERVICE == 2, na.rm=T),
     Total.Customer.Service.Survey.Resonses = sum(Number.Of.Responses.Satisfied.With.Customer.Service + Number.Of.Responses.Dissatisfied.With.Customer.Service),
-    Percent.Satisfied.With.Quality.Of.Service = (Number.Of.Responses.Satisfied.With.Quality.Of.Service/Total.Quality.Of.Service.Survey.Responses),
-    Percent.Dissatisfied.With.Quality.Of.Service = (Number.Of.Responses.Dissatisfied.With.Quality.Of.Service/Total.Quality.Of.Service.Survey.Responses),
-    Percent.Satisfied.With.Timeliness.Of.Service = (Number.Of.Responses.Satisfied.With.Timeliness.Of.Service/Total.Timeliness.Of.Service.Survey.Responses),
-    Percent.Dissatisfied.With.Timeliness.Of.Service = (Number.Of.Responses.Satisfied.With.Timeliness.Of.Service/Total.Timeliness.Of.Service.Survey.Responses),
-    Percent.Satisfied.With.Customer.Service = (Number.Of.Responses.Satisfied.With.Customer.Service/Total.Customer.Service.Survey.Resonses),
+    Percent.Satisfied.With.Quality.Of.Service = (Number.Of.Responses.Satisfied.With.Quality.Of.Service/Total.Quality.Of.Service.Survey.Responses)*100,
+    Percent.Dissatisfied.With.Quality.Of.Service = (Number.Of.Responses.Dissatisfied.With.Quality.Of.Service/Total.Quality.Of.Service.Survey.Responses)*100,
+    Percent.Satisfied.With.Timeliness.Of.Service = (Number.Of.Responses.Satisfied.With.Timeliness.Of.Service/Total.Timeliness.Of.Service.Survey.Responses)*100,
+    Percent.Dissatisfied.With.Timeliness.Of.Service = (Number.Of.Responses.Satisfied.With.Timeliness.Of.Service/Total.Timeliness.Of.Service.Survey.Responses)*100,
+    Percent.Satisfied.With.Customer.Service = (Number.Of.Responses.Satisfied.With.Customer.Service/Total.Customer.Service.Survey.Resonses)*100,
     Percent.Dissatisfied.With.Customer.Service = (Number.Of.Responses.Dissatisfied.With.Customer.Service/Total.Customer.Service.Survey.Resonses)) %>%
   mutate(UniqueID = paste(DEPARTMENT, WORK.GROUP, CREATION.YEAR, CREATION.MONTH, sep = " "))
 
