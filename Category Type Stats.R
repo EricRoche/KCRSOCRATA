@@ -45,6 +45,7 @@ TypeStats$Below.One.Standard.Deviation[TypeStats$Below.One.Standard.Deviation < 
 TypeStats <- TypeStats[,c(
   "DEPARTMENT",
   "WORK.GROUP",
+  "TYPE",
   "Creation.Fiscal.Year",
   "CREATION.YEAR",
   "CREATION.MONTH",
@@ -67,7 +68,7 @@ TypeStats <- TypeStats[,c(
 )]
 
 #Upload to Socrata
-JSONEndpointTypeStats <- "https://data.kcmo.org/resource/8umx-fi4g.json"
+JSONEndpointTypeStats <- "https://data.kcmo.org/resource/kvzj-4c6r.json"
 write.socrata(TypeStats,JSONEndpointTypeStats,"REPLACE",socrataEmail,socrataPassword,app_token = Token)
 write.csv(TypeStats, file = "311TypeStats.csv")
 
